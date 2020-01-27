@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SqlInliner": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\..\\..\\SM_tests\\ServiceMonitorReportingDashboard"
+    }
+  }
+}

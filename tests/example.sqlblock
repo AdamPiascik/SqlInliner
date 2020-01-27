@@ -1,0 +1,36 @@
+Here is an example of a predefined block of SQL code
+[SqlBlockDef_
+    
+    MakeJsonIntArray =
+        SELECT @Var1
+        FROM @Var2
+        FOR JSON PATH
+
+_SqlBlockDef]
+
+Here is another example of a predefined block of SQL code
+[SqlBlockDef_
+
+	SelectDeletions =
+	(SELECT
+		JSON_QUERY
+		(
+			'[' 
+			+ 
+			STUFF(( SELECT ',' + CAST(Dels.ID as nvarchar(50))
+			FROM #Deletions Dels (NOLOCK)
+			WHERE Dels.ErrorMessage IS NULL
+			GROUP BY ',' + CAST(Dels.ID as nvarchar(50))
+			FOR XML PATH('')), 1, 1, '')
+			+
+			']' 
+		) AS SuccessfulDeletions,
+	(SELECT
+		Dels.ID AS Id,
+		Dels.ErrorMessage AS Reason
+	FROM #Deletions Dels (NOLOCK)
+	WHERE Dels.ErrorMessage IS NOT NULL
+	FOR JSON PATH) AS FailedDeletions
+	FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+
+_SqlBlockDef]
